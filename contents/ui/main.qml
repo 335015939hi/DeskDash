@@ -14,6 +14,7 @@ import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 import org.kde.ksvg as KSvg
 import org.kde.kirigami as Kirigami
+import org.kde.kwindowsystem
 
 import org.kde.private.desktopcontainment.folder as Folder
 
@@ -50,7 +51,8 @@ ContainmentItem {
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    property bool isFolder: (Plasmoid.pluginName === "org.kde.plasma.folder")
+    //property bool isFolder: (Plasmoid.pluginName === "org.kde.plasma.folder")
+    property bool isFolder: true
     property bool isContainment: Plasmoid.isContainment
     property bool isPopup: (Plasmoid.location !== PlasmaCore.Types.Floating)
     property bool useListViewMode: isPopup && Plasmoid.configuration.viewMode === 0
@@ -66,6 +68,17 @@ ContainmentItem {
 
     readonly property FolderViewLayerLoader folderViewLayer: fullRepresentationItem.folderViewLayer
     readonly property ContainmentLayoutManager.AppletsLayout appletsLayout: fullRepresentationItem.appletsLayout
+
+    // Dashboard visibility: show when "peek at desktop" is active or in edit mode
+    // Only applies to desktop containment; folder widgets are always visible
+    property bool showingDesktop: KWindowSystem.showingDesktop
+    property bool isDashboardVisible
+
+    Binding {
+        target: root
+        property: "isDashboardVisible"
+        value: !isContainment || showingDesktop || Plasmoid.containment.corona.editMode
+    }
 
     // Plasmoid.title is set by a Binding {} in FolderViewLayer
     toolTipSubText: ""
@@ -178,6 +191,24 @@ ContainmentItem {
     preloadFullRepresentation: true
     fullRepresentation: FolderViewDropArea {
         id: dropArea
+
+        opacity: root.isDashboardVisible ? 1 : 0
+        scale: root.isDashboardVisible ? 1 : 0.6
+        visible: opacity > 0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.OutQuad
+            }
+        }
+
+        Behavior on scale {
+            NumberAnimation {
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.OutQuad
+            }
+        }
 
         anchors {
             fill: parent
