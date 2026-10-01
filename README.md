@@ -5,7 +5,7 @@ A **KDE Plasma 6 desktop containment** that shows an empty desktop until you act
 ## ✨ Features
 
 - **Clean Desktop by Default** — Shows an empty, distraction-free desktop until you need it
-- **Peek at Desktop** — Reveals folder contents and widgets when you trigger "Peek at Desktop" (default: <kbd>Meta</kbd>+<kbd>,</kbd> or mouse gesture)
+- **Peek at Desktop** — Reveals folder contents and widgets when you trigger "Peek at Desktop"
 
 ## 📦 Installation
 
