@@ -193,17 +193,9 @@ ContainmentItem {
         id: dropArea
 
         opacity: root.isDashboardVisible ? 1 : 0
-        scale: root.isDashboardVisible ? 1 : 0.6
         visible: opacity > 0
 
         Behavior on opacity {
-            NumberAnimation {
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.OutQuad
-            }
-        }
-
-        Behavior on scale {
             NumberAnimation {
                 duration: Kirigami.Units.longDuration
                 easing.type: Easing.OutQuad
